@@ -3,27 +3,23 @@
 function addUser($data){
     global $f;
     try{
-
     $emailExists = $f->checkColumns($data['email'], 'email', 'authentication');
-    
-
     if ($emailExists) {
         $f->outPut('Email address already exists', 400, []);
         return;
     } 
-
     $auth = [
         "email"=>$data['email'],
         "userType"=>$data['userType']??1,
         "password"=>password_hash($data['password'], PASSWORD_DEFAULT)
     ];
-
         $uid = $f->insertReturnId($auth, 'authentication');
         $user = [
             "userId"=>$uid,
             "firstName"=>$data['firstName'],
             "otherName"=>$data['otherName']??'',
             "lastName"=>$data['lastName'],
+            "gender"=>$data['gender'],
             "phoneNumber"=>$data['phoneNumber'],
             "dob"=>$data['dateOfBirth'],
             "field"=>$data['fieldOfStudy'],
@@ -36,9 +32,20 @@ function addUser($data){
     }
 }
 
-function getUsers(){
+function getUser($id){
     global $f;
-    $f->outPut('Hello', 200, []);
+    
+    try{
+        $bio = $f->selectJoins("select a.email, u.* from authentication a
+         left join users u on a.id = u.userId")->fetchAll();
+
+         $f->outPut("Successful", 200, [
+            "biodata"=>$bio
+         ]);
+    }catch(Exception  $e){
+        $f->outPut($e->getMessage(), 500, []);
+    }
+
 }
 
 
@@ -51,7 +58,7 @@ function login($data){
         if($user->rowCount() > 0){
             $userObject = $user->fetchObject(); 
             if (password_verify($password, $userObject->password)) {
-                $f->outPut("Successful", 200, [$userObject]);
+                $f->outPut("Successful", 200, $userObject);
             } else {
                 $f->outPut('Wrong password', 405, []);
             }
