@@ -55,5 +55,37 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 
 
+CREATE TABLE IF NOT EXISTS cohortQuestions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cid int not null,
+    qid int NOT NULL,
+);
+
+CREATE TABLE IF NOT EXISTS possibleOptions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cid int not null,
+    type varchar(100) not null,
+    valuez varchar(255) not null
+);
+
+CREATE TABLE IF NOT EXISTS answers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cid int not null,
+    uid int not null,
+    qid int not null,
+    response varchar(255)
+);
+
+CREATE TABLE IF NOT EXISTS userCohort (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cid int not null,
+    uid int not null,
+    state int not null DEFAULT 0,
+    date   TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+);
+
+
+
+
 
 

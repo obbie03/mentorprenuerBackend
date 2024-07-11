@@ -6,6 +6,7 @@ $routes = [
     '/user/{userId}' => 'getUser',
     '/cohorts/{cid}' => 'getCohort',
     '/settings' => 'getSettings',
+    '/getQuestions/{cid}/{uid}' => 'getQuestions'
  
     ],
     'POST' => [
@@ -13,6 +14,8 @@ $routes = [
         '/login' => 'login',  
         '/addCohort' => 'addCohort',  
         '/settings' => 'addSetting',  
+        '/cohortQuestions' => 'addQuestions',  
+        '/answers'=>'postAnswers'
         
     ],
 ];

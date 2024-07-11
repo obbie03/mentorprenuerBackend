@@ -38,7 +38,6 @@ if (isset($routes[$method])) {
         if (preg_match('#^' . $pattern . '$#', $url, $matches)) {
             
             $params = array_slice($matches, 1); // Extract parameters from matches
-            
             // Get additional POST parameters
             if ($method === 'POST') {
                 // Read raw input and decode JSON
@@ -48,7 +47,6 @@ if (isset($routes[$method])) {
                 // Add the decoded JSON data as the last parameter
                 $params[] = $data;
             }
-            
             // Call the function with the extracted parameters
             call_user_func_array($function, $params);
             exit;
