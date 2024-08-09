@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS answers (
     response varchar(255)
 );
 
-CREATE TABLE IF NOT EXISTS userCohort (
+CREATE TABLE IF NOT EXISTS usercohort (
     id INT AUTO_INCREMENT PRIMARY KEY,
     cid int not null,
     uid int not null,

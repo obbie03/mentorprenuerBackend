@@ -15,17 +15,58 @@ function addCohort($data){
     }
 }
 
-
-function getCohort($id){
+function getCohort($cid){
     global $f;
     try{
-        $data = $f->SelectJoins("select * from cohorts where cid = '$id'")->fetchAll();
+        $data = $f->SelectJoins("select * from cohorts where cid = '$cid'")->fetchAll();
             $f->outPut("Successful", 200, $data);
     }
     catch(Exception  $e){
         $f->outPut($e->getMessage(), $e->getCode(), []);
     }
 }
+
+function getAnswers($cid, $di, $uid){
+    global $f;
+    try{
+        $data = $f->SelectJoins("select * from answers where cid = '$cid' and uid = '$uid' and qid != 0")->fetchAll();
+            $f->outPut("Successful", 200, $data);
+    }
+    catch(Exception  $e){
+        $f->outPut($e->getMessage(), $e->getCode(), []);
+    }
+}
+
+
+function approveUser($data){
+    global $f;
+
+    try{
+        $action = $data['action'];
+        $cid = $data['cohortId'];
+        $uid = $data['user'];
+        $f->runQuery("update usercohort set state = '$action' where cid = '$cid' and uid = '$uid'");
+        $f->outPut("Successful", 200, []);
+    } catch(Exception  $e){
+        $f->outPut($e->getMessage(), $e->getCode(), []);
+    }
+
+
+}
+
+function getCohortUsers($cid){
+    global $f;
+    try{
+        $data = $f->SelectJoins("select * from usercohort uc left join users u on uc.uid = u.userId where cid = '$cid'")->fetchAll();
+            $f->outPut("Successful", 200, $data);
+    }
+    catch(Exception  $e){
+        $f->outPut($e->getMessage(), $e->getCode(), []);
+    }
+}
+
+
+
 
 function addQuestions($data){
     global $f;
@@ -54,9 +95,12 @@ function addQuestions($data){
 
 
 function getQuestions($id, $ci, $uid){
+    // echo $id;
+    // echo $uid;
+    
     global $f;
     try{
-        $cohort = $f->SelectJoins("select * from cohorts where cid = '$id'")->fetchAll();
+        $cohort = $f->SelectJoins("select * from cohorts where id = '$id'")->fetchAll();
         $user = $f->SelectJoins("select * from usercohort where cid = '$id' and uid = '$uid'")->fetchAll();
         $questions = $f->SelectJoins("select * from cohortquestions where cid = '$id'")->fetchAll();
         $options = $f->SelectJoins("select * from possibleoptions where cid = '$id'")->fetchAll();

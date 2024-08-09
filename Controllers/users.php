@@ -32,7 +32,7 @@ function addUser($data){
     }
 }
 
-function getUser($id){
+function getUser($userId){
     global $f;
     
     try{
@@ -47,7 +47,6 @@ function getUser($id){
     }
 
 }
-
 
 function login($data){
     global $f;
